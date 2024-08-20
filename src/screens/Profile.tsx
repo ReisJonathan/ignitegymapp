@@ -3,6 +3,7 @@ import { Center, VStack } from '@gluestack-ui/themed';
 import { ScreenHeader } from '@components/ScreenHeader';
 import { UserPhoto } from '@components/UserPhoto';
 import { Text } from '@gluestack-ui/themed';
+import { Input } from '@components/Input';
 
 export function Profile() {
   return (
@@ -10,7 +11,7 @@ export function Profile() {
       <ScreenHeader title="Perfil" />
 
       <ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
-        <Center>
+        <Center mt="$6" px="$10">
           <UserPhoto
             source={{ uri: 'https://github.com/reisjonathan.png' }}
             alt="Foto do usuário"
@@ -28,6 +29,16 @@ export function Profile() {
               Alterar Foto
             </Text>
           </TouchableOpacity>
+
+          <Center width="$full" gap="$4">
+            <Input placeholder="Nome" bg="$gray600" />
+            <Input
+              placeholder="E-mail"
+              value="jonathan@email.com"
+              bg="$gray600"
+              isReadOnly
+            />
+          </Center>
         </Center>
       </ScrollView>
     </VStack>
