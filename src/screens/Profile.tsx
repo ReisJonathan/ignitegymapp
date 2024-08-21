@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -21,23 +22,33 @@ export function Profile() {
   );
 
   async function handleUserPhotoSelect() {
-    const photoSelected = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-      aspect: [4, 4],
-      allowsEditing: true,
-    });
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
 
-    if (photoSelected.canceled) return;
+      if (photoSelected.canceled) return;
 
-    const photoUri = photoSelected.assets[0].uri;
+      const photoUri = photoSelected.assets[0].uri;
 
-    if (photoUri) {
-      const photoInfo = (await FileSystem.getInfoAsync(photoUri)) as {
-        size: number;
-      };
+      if (photoUri) {
+        const photoInfo = (await FileSystem.getInfoAsync(photoUri)) as {
+          size: number;
+        };
 
-      setUserPhoto(photoUri);
+        if (photoInfo.size && photoInfo.size / 1024 / 1024 > 5) {
+          return Alert.alert(
+            'Essa imagem é muito grande. Escolha uma até 5MB.'
+          );
+        }
+
+        setUserPhoto(photoUri);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
