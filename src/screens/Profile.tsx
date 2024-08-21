@@ -15,6 +15,7 @@ import { Button } from '@components/Button';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import { ToastMessage } from '@components/ToastMessage';
 
 export function Profile() {
   const [userPhoto, setUserPhoto] = useState(
@@ -55,6 +56,14 @@ export function Profile() {
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
+
+      <ToastMessage
+        id="1"
+        title="Teste"
+        description="Desc Teste"
+        action="success"
+        onClose={() => {}}
+      />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
