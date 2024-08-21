@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Center, Heading, VStack } from '@gluestack-ui/themed';
+import { Center, Heading, useToast, VStack } from '@gluestack-ui/themed';
 import { ScreenHeader } from '@components/ScreenHeader';
 import { UserPhoto } from '@components/UserPhoto';
 import { Text } from '@gluestack-ui/themed';
@@ -21,6 +21,8 @@ export function Profile() {
   const [userPhoto, setUserPhoto] = useState(
     'https://github.com/reisjonathan.png'
   );
+
+  const toast = useToast();
 
   async function handleUserPhotoSelect() {
     try {
@@ -41,9 +43,21 @@ export function Profile() {
         };
 
         if (photoInfo.size && photoInfo.size / 1024 / 1024 > 5) {
-          return Alert.alert(
-            'Essa imagem é muito grande. Escolha uma até 5MB.'
-          );
+          // return Alert.alert(
+          //   'Essa imagem é muito grande. Escolha uma até 5MB.'
+          // );
+          return toast.show({
+            placement: 'top',
+            render: ({ id }) => (
+              <ToastMessage
+                id={id}
+                action="error"
+                title="Imagem muito grande!"
+                description="Essa imagem é muito grande. Escolha uma de até 5MB."
+                onClose={() => toast.close(id)}
+              />
+            ),
+          });
         }
 
         setUserPhoto(photoUri);
@@ -56,14 +70,6 @@ export function Profile() {
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
-
-      <ToastMessage
-        id="1"
-        title="Teste"
-        description="Desc Teste"
-        action="success"
-        onClose={() => {}}
-      />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
