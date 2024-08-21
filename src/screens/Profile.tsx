@@ -13,6 +13,7 @@ import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 export function Profile() {
   const [userPhoto, setUserPhoto] = useState(
@@ -29,7 +30,15 @@ export function Profile() {
 
     if (photoSelected.canceled) return;
 
-    setUserPhoto(photoSelected.assets[0].uri);
+    const photoUri = photoSelected.assets[0].uri;
+
+    if (photoUri) {
+      const photoInfo = (await FileSystem.getInfoAsync(photoUri)) as {
+        size: number;
+      };
+
+      setUserPhoto(photoUri);
+    }
   }
 
   return (
