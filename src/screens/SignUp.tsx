@@ -15,12 +15,16 @@ import { Button } from '@components/Button';
 import { useForm, Controller } from 'react-hook-form';
 
 export function SignUp() {
-  const { control } = useForm();
+  const { control, handleSubmit } = useForm();
 
   const navigation = useNavigation();
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function handleSignUp(data: any) {
+    console.log(data);
   }
 
   return (
@@ -38,7 +42,7 @@ export function SignUp() {
           position="absolute"
         />
 
-        <VStack flex="1" px="$10" pb="$16">
+        <VStack flex={1} px="$10" pb="$16">
           <Center my="$24">
             <Logo />
 
@@ -98,11 +102,16 @@ export function SignUp() {
                   secureTextEntry
                   onChangeText={onChange}
                   value={value}
+                  onSubmitEditing={handleSubmit(handleSignUp)}
+                  returnKeyType="done"
                 />
               )}
             />
 
-            <Button title="Criar e acessar" />
+            <Button
+              title="Criar e acessar"
+              onPress={handleSubmit(handleSignUp)}
+            />
           </Center>
           <Button
             title="Voltar para o login"
