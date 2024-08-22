@@ -13,6 +13,7 @@ import Logo from '@assets/logo.svg';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { useForm, Controller } from 'react-hook-form';
+import { err } from 'react-native-svg';
 
 type FormDataProps = {
   name: string;
@@ -22,7 +23,11 @@ type FormDataProps = {
 };
 
 export function SignUp() {
-  const { control, handleSubmit } = useForm<FormDataProps>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataProps>({
     defaultValues: {
       // Carrega valores iniciais na aplicação, como não utiliza estados a aplicação deve ser reiniciada para funcionar
       // name: 'Jonathan',
@@ -80,6 +85,9 @@ export function SignUp() {
                 />
               )}
             />
+            {errors.name?.message && (
+              <Text color="$white">{errors.name.message}</Text>
+            )}
 
             <Controller
               control={control}
