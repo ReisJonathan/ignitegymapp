@@ -22,7 +22,12 @@ type FormDataProps = {
 };
 
 export function SignUp() {
-  const { control, handleSubmit } = useForm<FormDataProps>();
+  const { control, handleSubmit } = useForm<FormDataProps>({
+    defaultValues: {
+      // Carrega valores iniciais na aplicação, como não utiliza estados a aplicação deve ser reiniciada para funcionar
+      // name: 'Jonathan',
+    },
+  });
 
   const navigation = useNavigation();
 
