@@ -63,7 +63,9 @@ export function SignUp() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   }
 
   return (
