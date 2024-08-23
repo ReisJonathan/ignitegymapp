@@ -55,17 +55,18 @@ export function SignUp() {
     navigation.goBack();
   }
 
-  function handleSignUp(data: FormDataProps) {
-    fetch('http://192.168.29.64:3333/users', {
+  async function handleSignUp(data: FormDataProps) {
+    const response = await fetch('http://192.168.29.64:3333/users', {
       method: 'POST',
       headers: {
         Accept: 'application/josn',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    });
+
+    const response_json = await response.json();
+    console.log(response_json);
   }
 
   return (
