@@ -15,6 +15,7 @@ import { Button } from '@components/Button';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { api } from '@services/api';
 
 type FormDataProps = {
   name: string;
@@ -56,17 +57,8 @@ export function SignUp() {
   }
 
   async function handleSignUp(data: FormDataProps) {
-    const response = await fetch('http://192.168.29.64:3333/users', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/josn',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    const response_json = await response.json();
-    console.log(response_json);
+    const response = await api.post('users', data);
+    console.log(response.data);
   }
 
   return (
