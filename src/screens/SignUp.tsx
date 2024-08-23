@@ -56,7 +56,14 @@ export function SignUp() {
   }
 
   function handleSignUp(data: FormDataProps) {
-    console.log(data);
+    fetch('http://192.168.29.64:3333/users', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/josn',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
   }
 
   return (
