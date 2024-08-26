@@ -45,8 +45,8 @@ export function SignIn() {
     navigation.navigate('signUp');
   }
 
-  function handleSignIn({ email, password }: FormDataProps) {
-    signIn(email, password);
+  async function handleSignIn({ email, password }: FormDataProps) {
+    await signIn(email, password);
   }
 
   return (
@@ -64,7 +64,7 @@ export function SignIn() {
           position="absolute"
         />
 
-        <VStack flex="1" px="$10" pb="$16">
+        <VStack flex={1} px="$10" pb="$16">
           <Center my="$24">
             <Logo />
 
