@@ -18,6 +18,7 @@ import { Button } from '@components/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useAuth } from '@hooks/useAuth';
 
 type FormDataProps = {
   email: string;
@@ -30,6 +31,8 @@ const signInSchema = yup.object({
 });
 
 export function SignIn() {
+  const { signIn } = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -43,7 +46,7 @@ export function SignIn() {
   }
 
   function handleSignIn({ email, password }: FormDataProps) {
-    console.log(email, password);
+    signIn(email, password);
   }
 
   return (
