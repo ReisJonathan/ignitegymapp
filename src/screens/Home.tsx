@@ -29,14 +29,13 @@ export function Home() {
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  function handleOpenExerciseDetails() {
-    navigation.navigate('exercise');
+  function handleOpenExerciseDetails(exerciseId: string) {
+    navigation.navigate('exercise', { exerciseId });
   }
 
   async function fetchGroups() {
     try {
       const response = await api.get('/groups');
-      console.log(response.data);
       setGroups(response.data);
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -126,7 +125,10 @@ export function Home() {
             data={exercises}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <ExerciseCard onPress={handleOpenExerciseDetails} data={item} />
+              <ExerciseCard
+                onPress={() => handleOpenExerciseDetails(item.id)}
+                data={item}
+              />
             )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
