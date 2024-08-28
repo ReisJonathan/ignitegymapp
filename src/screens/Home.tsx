@@ -16,11 +16,12 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
+import { ExerciseDTO } from '@dtos/ExerciseDTO';
 
 export function Home() {
   const toast = useToast();
 
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
 
   const [groups, setGroups] = useState<string[]>([]);
   const [groupSelected, setGroupSelected] = useState('costas');
@@ -56,7 +57,7 @@ export function Home() {
   async function fetchExercisesByGroup() {
     try {
       const response = await api.get(`/exercises/bygroup/${groupSelected}`);
-      console.log(response.data);
+      setExercises(response.data);
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
@@ -117,7 +118,7 @@ export function Home() {
 
         <FlatList
           data={exercises}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.id}
           renderItem={() => (
             <ExerciseCard onPress={handleOpenExerciseDetails} />
           )}
