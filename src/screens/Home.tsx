@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Group } from '@components/Group';
 import { HomeHeader } from '@components/HomeHeader';
 import {
@@ -12,7 +12,7 @@ import {
 import { FlatList } from 'react-native';
 import { Text } from '@gluestack-ui/themed';
 import { ExerciseCard } from '@components/ExerciseCard';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
@@ -20,15 +20,10 @@ import { AppError } from '@utils/AppError';
 export function Home() {
   const toast = useToast();
 
-  const [exercises, setExercises] = useState([
-    'Puxada frontal',
-    'Remada curvada',
-    'Remada unilateral',
-    'Levantamento terra',
-  ]);
+  const [exercises, setExercises] = useState([]);
 
   const [groups, setGroups] = useState<string[]>([]);
-  const [groupSelected, setGroupSelected] = useState('Costas');
+  const [groupSelected, setGroupSelected] = useState('costas');
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
@@ -58,9 +53,36 @@ export function Home() {
     }
   }
 
+  async function fetchExercisesByGroup() {
+    try {
+      const response = await api.get(`/exercises/bygroup/${groupSelected}`);
+      console.log(response.data);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar os exercícios.';
+
+      toast.show({
+        placement: 'top',
+        render: () => (
+          <Toast action="error" variant="outline" bgColor="$red500">
+            <ToastTitle color="$white">{title}</ToastTitle>
+          </Toast>
+        ),
+      });
+    }
+  }
+
   useEffect(() => {
     fetchGroups();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchExercisesByGroup();
+    }, [groupSelected])
+  );
 
   return (
     <VStack flex={1}>
