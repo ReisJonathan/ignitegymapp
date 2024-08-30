@@ -13,28 +13,20 @@ import {
 import { AppError } from '@utils/AppError';
 import { api } from '@services/api';
 import { useFocusEffect } from '@react-navigation/native';
+import { HistoryByDayDTO } from '@dtos/HistoryByDayDTO';
 
 export function History() {
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
 
-  const [exercises, setExercises] = useState([
-    {
-      title: '22.07.24',
-      data: ['Puxada frontal', 'Remanda unilateral'],
-    },
-    {
-      title: '23.07.24',
-      data: ['Puxada frontal'],
-    },
-  ]);
+  const [exercises, setExercises] = useState<HistoryByDayDTO[]>([]);
 
   async function fetchHistory() {
     try {
       setIsLoading(true);
 
       const response = await api.get('/history');
-      console.log(response.data);
+      setExercises(response.data);
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
@@ -66,7 +58,7 @@ export function History() {
 
       <SectionList
         sections={exercises}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.id}
         renderItem={() => <HistoryCard />}
         renderSectionHeader={({ section }) => (
           <Heading
